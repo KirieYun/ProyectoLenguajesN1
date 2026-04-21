@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ImgApplication<img>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.demo.img.ImgApplication",
+            "projectName": "img",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
