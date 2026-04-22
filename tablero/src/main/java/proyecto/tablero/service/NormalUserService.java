@@ -6,31 +6,41 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import proyecto.tablero.entity.NormalUser;
+import proyecto.tablero.entity.User;
+import proyecto.tablero.repository.NormalUserRepository;
 
 @Service
 @AllArgsConstructor
 public class NormalUserService {
-    
-    private NormalUserService normalUserService;
 
-    public NormalUser add(NormalUser normalUser) {
-        return normalUserService.add(normalUser);
+    private final NormalUserRepository normalUserRepository;
+
+    public NormalUser add(User user) {
+        NormalUser normalUser = new NormalUser();
+        normalUser.setUser(user);
+        return normalUserRepository.save(normalUser);
+        
     }
 
     public List<NormalUser> getAll() {
-        return normalUserService.getAll();
+        return normalUserRepository.findAll();
     }
 
     public NormalUser getById(int id) {
-        return normalUserService.getById(id);
-     }
+        return normalUserRepository.findById(id).orElse(null);
+    }
 
-     public NormalUser update(int id, String correo, String contraseña, String nombre) {
-         return normalUserService.update(id, correo, contraseña, nombre);
-     }
+    public NormalUser update(int id, User user) {
+        NormalUser existingNormalUser = normalUserRepository.findById(id).orElse(null);
+        if (existingNormalUser == null) {
+            return null;
+        }
+        existingNormalUser.setUser(user);
+        return normalUserRepository.save(existingNormalUser);
+    }
 
      public void delete(int id) {
-         normalUserService.delete(id);
+         normalUserRepository.deleteById(id);
      }
 
 }

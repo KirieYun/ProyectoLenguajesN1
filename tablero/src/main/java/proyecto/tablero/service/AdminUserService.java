@@ -2,38 +2,44 @@ package proyecto.tablero.service;
 
 import java.util.List;
 
+import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion.Use;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import proyecto.tablero.entity.AdminUser;
+import proyecto.tablero.entity.User;
+import proyecto.tablero.repository.AdminUserRepository;
 
 @Service
 @AllArgsConstructor
 public class AdminUserService {
     
-    private AdminUserService adminUserService;
+    private AdminUserRepository adminUserRepository;
 
-        public AdminUser add(AdminUser adminUser) {
-            return adminUserService.add(adminUser);
+        public AdminUser add(User user) {
+            AdminUser adminUser = new AdminUser();
+            adminUser.setUser(user);
+            return adminUserRepository.save(adminUser);
         }
     
         public List<AdminUser> getAll() {
-            return adminUserService.getAll();
+            return adminUserRepository.findAll();
         }
     
         public AdminUser getById(int id) {
-            return adminUserService.getById(id);
+            return adminUserRepository.findById(id).orElse(null);
         }
     
-        public AdminUser update(int id, String correo, String contraseña, String nombre) {
-            return adminUserService.update(id, correo, contraseña, nombre);
+        public AdminUser update(int id, User user) {
+        AdminUser existingAdminUser = adminUserRepository.findById(id).orElse(null);
+        if (existingAdminUser == null) {
+            return null;
         }
+        existingAdminUser.setUser(user);
+        return adminUserRepository.save(existingAdminUser);
+    }
     
         public void delete(int id) {
-            adminUserService.delete(id);
+            adminUserRepository.deleteById(id);
         }
-
-
-
-
 }

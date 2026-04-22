@@ -2,7 +2,6 @@ package proyecto.tablero.service;
 
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -77,19 +76,17 @@ public class UserService {
 
     /* ⁡⁣⁢⁣Borrar usuario uno a la imagen de perfil⁡ */
     public void delete(int id) {
-        Optional<User> userOpt = userRepository.findById(id);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            try {
-                File fileToDelete = new File(System.getProperty("user.dir"), user.getImgUrl());
-                if (fileToDelete.exists()) {
-                    fileToDelete.delete();
-                }
-            } catch (Exception e) {
-                System.err.println("Error al eliminar archivo: " + e.getMessage());
+
+        try {
+            User user = userRepository.findById(id).orElse(null);
+            File fileToDelete = new File(System.getProperty("user.dir"), user.getImgUrl());
+            if (fileToDelete.exists()) {
+                fileToDelete.delete();
             }
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            System.err.println("Error al eliminar archivo: " + e.getMessage());
         }
-        userRepository.deleteById(id);
     }
 
     /* ⁡⁣⁢⁣cambiar foto de perfil⁡ */
@@ -142,6 +139,7 @@ public class UserService {
             existingUser.setCorreo(correo);
             existingUser.setContrasena(contraseña);
             existingUser.setNombre(nombre);
+            updateProfilePicture(id, file);
 
             return userRepository.save(existingUser);
         }
