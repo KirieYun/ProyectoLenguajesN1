@@ -23,4 +23,8 @@ public class Publicacion {
 
     @OneToMany(mappedBy = "publicacion")
     private java.util.List<PublicacionesGuardadas> publicacionesGuardadas;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

@@ -2,7 +2,6 @@ package proyecto.tablero.service;
 
 import java.util.List;
 
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion.Use;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;

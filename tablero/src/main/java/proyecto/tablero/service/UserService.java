@@ -68,6 +68,7 @@ public class UserService {
 
     public List<User> getAll() {
         return userRepository.findAll();
+
     }
 
     public User getById(int id) {
@@ -140,6 +141,7 @@ public class UserService {
             existingUser.setContrasena(contraseña);
             existingUser.setNombre(nombre);
             updateProfilePicture(id, file);
+
 
             return userRepository.save(existingUser);
         }
