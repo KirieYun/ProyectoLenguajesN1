@@ -8,4 +8,5 @@ import proyecto.tablero.entity.Publicacion;
 
 public interface PublicacionRepository extends JpaRepository<Publicacion, Integer> {
     List<Publicacion> findByCategoryId(Integer categoryId);
+    
 }
