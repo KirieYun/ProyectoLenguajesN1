@@ -29,7 +29,6 @@ public class ViewController {
     @GetMapping("/")
     public String inicio(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
         List<Publicacion> noticias;
-        // Filtro por categoría funcional gracias a tu Repository/Service
         if (categoriaId != null && categoriaId != 0) {
             noticias = publicacionService.getByCategory(categoriaId);
         } else {
@@ -53,18 +52,16 @@ public class ViewController {
     public String guardarNoticia(
             @RequestParam("titulo") String titulo,
             @RequestParam("contenido") String contenido,
-            @RequestParam("categoriaId") Integer categoriaId, // ID proveniente del <select>
+            @RequestParam("categoriaId") Integer categoriaId,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         
-        // 1. Creamos la publicación (maneja la imagen internamente)
         Publicacion nueva = publicacionService.addPublicacion(titulo, contenido, 1, file);
         
-        // 2. Usamos tu método getById de CategoryService para vincular la categoría
         if (categoriaId != null && categoriaId != 0) {
             Category cat = categoryService.getById(categoriaId);
             if (cat != null) {
                 nueva.setCategory(cat);
-                publicacionService.add(nueva); // Guardamos la relación
+                publicacionService.add(nueva);
             }
         }
         

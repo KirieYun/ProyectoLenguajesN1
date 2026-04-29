@@ -133,8 +133,6 @@ public class PublicacionService {
             System.err.println("Error al eliminar archivo: " + e.getMessage());
         }
     }
-
-    // Agrega esto al final de tu clase PublicacionService
     public List<Publicacion> getByCategory(Integer categoryId) {
         return publicacionRepository.findByCategoryId(categoryId);
     }
