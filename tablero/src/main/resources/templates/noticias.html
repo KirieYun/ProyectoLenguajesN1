@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiquiConnect - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="bg-light">
+    <div th:replace="~{fragments/header :: header-principal}"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar oculto en móviles -->
+            <div class="col-lg-3 d-none d-lg-block p-0">
+                <div th:replace="~{fragments/sidebar :: sidebar-principal}"></div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <main class="col-12 col-lg-9 p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <div>
+                        <h1 class="fw-black display-5 mb-1">Tablón</h1>
+                        <p class="text-muted">Avisos del Recinto de Siquirres</p>
+                    </div>
+                    <a th:href="@{/noticias/nueva}" class="btn btn-dark rounded-pill px-4 py-2 fw-bold shadow-sm">
+                        <i class="bi bi-plus-lg me-2"></i> NUEVA POST
+                    </a>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Tarjeta de Noticia -->
+                    <div class="col-12 col-md-6 col-xl-4" th:each="noticia : ${listaNoticias}">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-hover">
+                            <div class="position-relative">
+                                <img th:src="${noticia.imgUrl != null ? noticia.imgUrl : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=500'}" 
+                                     class="card-img-top" style="height: 200px; object-fit: cover;">
+                                <!-- PROTECCIÓN: Navegación segura para categoría -->
+                                <span class="position-absolute top-0 end-0 m-3 badge bg-white text-dark rounded-pill shadow-sm" 
+                                      th:text="${noticia.category?.nombre ?: 'General'}">Categoría</span>
+                            </div>
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-2" th:text="${noticia.titulo}">Título</h5>
+                                <p class="text-secondary small mb-0" th:text="${#strings.abbreviate(noticia.contenido, 100)}"></p>
+                            </div>
+                            <div class="card-footer bg-white border-0 p-4 pt-0 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <!-- PROTECCIÓN: Navegación segura para avatar e inicial -->
+                                    <div class="avatar-circle bg-secondary text-white me-2" 
+                                         style="width: 25px; height: 25px; font-size: 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <span th:text="${noticia.user != null ? #strings.substring(noticia.user.nombre, 0, 1) : 'A'}">U</span>
+                                    </div>
+                                    <!-- PROTECCIÓN: Navegación segura para nombre de autor -->
+                                    <small class="fw-bold text-muted" th:text="${noticia.user?.nombre ?: 'Anónimo'}">Autor</small>
+                                </div>
+                                <i class="bi bi-bookmark-plus fs-5 text-muted" style="cursor: pointer;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

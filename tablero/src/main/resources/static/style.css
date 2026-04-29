@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #1a1a1a;
+}
+
+.fw-black { font-weight: 800; }
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+}
+
+.hover-sidebar:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+    color: #0d6efd !important;
+}
+
+.avatar-circle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Responsividad para el Sidebar */
+@media (max-width: 991.98px) {
+    .sidebar-container {
+        height: auto !important;
+        min-height: auto !important;
+        border-right: none !important;
+        border-bottom: 1px solid #dee2e6;
+    }
+}

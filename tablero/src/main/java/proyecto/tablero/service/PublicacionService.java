@@ -110,7 +110,6 @@ public class PublicacionService {
         }
     }
 
-
     public Publicacion update(int id, String titulo, String contenido, int userId) {
         Publicacion existingPublicacion = publicacionRepository.findById(id).orElse(null);
         if (existingPublicacion != null) {
@@ -121,8 +120,6 @@ public class PublicacionService {
         return null;
     }
 
-
-
     public void delete(int id) {
 
         try {
@@ -131,10 +128,15 @@ public class PublicacionService {
             if (fileToDelete.exists()) {
                 fileToDelete.delete();
             }
-                publicacionRepository.deleteById(id);
+            publicacionRepository.deleteById(id);
         } catch (Exception e) {
             System.err.println("Error al eliminar archivo: " + e.getMessage());
         }
+    }
+
+    // Agrega esto al final de tu clase PublicacionService
+    public List<Publicacion> getByCategory(Integer categoryId) {
+        return publicacionRepository.findByCategoryId(categoryId);
     }
 
 }

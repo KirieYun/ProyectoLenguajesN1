@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <aside th:fragment="sidebar-principal" class="sidebar-container border-end bg-white" style="width: 280px; min-height: 100vh;">
+        <div class="p-4 position-sticky" style="top: 80px;">
+            <!-- Bloque de Perfil -->
+            <div class="mb-4">
+                <a th:href="@{/perfil}" class="d-flex align-items-center text-decoration-none p-3 rounded-4 bg-light border hover-sidebar">
+                    <div class="avatar-circle bg-primary text-white me-3 shadow-sm" style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                        <span th:text="${usuario != null ? #strings.substring(usuario.nombre, 0, 1) : 'U'}">U</span>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="mb-0 fw-bold text-dark text-truncate" th:text="${usuario != null ? usuario.nombre : 'Invitado'}">Nombre</p>
+                        <small class="text-muted">Mi Perfil</small>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Menú de Navegación -->
+            <div class="nav flex-column gap-1">
+                <a class="nav-link d-flex align-items-center p-3 rounded-3 text-dark fw-bold border-start border-4 border-primary bg-primary bg-opacity-10" th:href="@{/}">
+                    <i class="bi bi-grid-fill me-3"></i> TABLÓN
+                </a>
+                
+                <div class="mt-4 mb-2 ps-3 text-uppercase text-muted fw-bold small" style="letter-spacing: 1px;">Categorías</div>
+                
+                <a th:each="cat : ${categorias}" 
+                   th:href="@{/(categoriaId=${cat.id})}"
+                   class="nav-link d-flex align-items-center p-3 rounded-3 text-secondary hover-sidebar">
+                    <i class="bi bi-tag me-3"></i>
+                    <span th:text="${cat.nombre}">Categoría</span>
+                </a>
+
+                <div class="mt-4 pt-3 border-top">
+                    <a class="nav-link d-flex align-items-center p-3 rounded-3 text-muted hover-sidebar" th:href="@{/usuarios}">
+                        <i class="bi bi-people me-3"></i> Usuarios
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+</body>
+</html>
