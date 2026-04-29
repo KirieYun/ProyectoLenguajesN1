@@ -15,7 +15,12 @@ import proyecto.tablero.repository.PublicacionRepository;
 @AllArgsConstructor
 public class PublicacionService {
 
+    private final CategoryService categoryService;
     private PublicacionRepository publicacionRepository;
+
+    PublicacionService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     public Publicacion add(Publicacion publicacion) {
         return publicacionRepository.save(publicacion);
@@ -110,11 +115,15 @@ public class PublicacionService {
         }
     }
 
-    public Publicacion update(int id, String titulo, String contenido, int userId) {
+    public Publicacion update(int id, String titulo, String contenido, int category_id, MultipartFile file) {
         Publicacion existingPublicacion = publicacionRepository.findById(id).orElse(null);
         if (existingPublicacion != null) {
             existingPublicacion.setTitulo(titulo);
             existingPublicacion.setContenido(contenido);
+            existingPublicacion.setCategory(categoryService.getById(category_id));
+                if (file != null && !file.isEmpty()) {
+                    updatePubliPicture(id, file);
+                }
             return publicacionRepository.save(existingPublicacion);
         }
         return null;
