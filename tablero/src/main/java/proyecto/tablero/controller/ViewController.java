@@ -55,7 +55,7 @@ public class ViewController {
             @RequestParam("categoriaId") Integer categoriaId,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         
-        Publicacion nueva = publicacionService.addPublicacion(titulo, contenido, 1, file);
+        Publicacion nueva = publicacionService.addPublicacion(titulo, contenido, 1, file, getUsuarioMock());
         
         if (categoriaId != null && categoriaId != 0) {
             Category cat = categoryService.getById(categoriaId);

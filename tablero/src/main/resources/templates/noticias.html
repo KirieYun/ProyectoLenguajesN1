@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body class="bg-light">
     <div th:replace="~{fragments/header :: header-principal}"></div>
 
@@ -31,38 +33,101 @@
                 </div>
 
                 <div class="row g-4">
-                    <!-- Tarjeta de Noticia -->
-                    <div class="col-12 col-md-6 col-xl-4" th:each="noticia : ${listaNoticias}">
-                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-hover">
-                            <div class="position-relative">
-                                <img th:src="${noticia.imgUrl != null ? noticia.imgUrl : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=500'}" 
-                                     class="card-img-top" style="height: 200px; object-fit: cover;">
-                                <!-- PROTECCIÓN: Navegación segura para categoría -->
-                                <span class="position-absolute top-0 end-0 m-3 badge bg-white text-dark rounded-pill shadow-sm" 
-                                      th:text="${noticia.category?.nombre ?: 'General'}">Categoría</span>
-                            </div>
-                            <div class="card-body p-4">
-                                <h5 class="fw-bold mb-2" th:text="${noticia.titulo}">Título</h5>
-                                <p class="text-secondary small mb-0" th:text="${#strings.abbreviate(noticia.contenido, 100)}"></p>
-                            </div>
-                            <div class="card-footer bg-white border-0 p-4 pt-0 d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <!-- PROTECCIÓN: Navegación segura para avatar e inicial -->
-                                    <div class="avatar-circle bg-secondary text-white me-2" 
-                                         style="width: 25px; height: 25px; font-size: 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                        <span th:text="${noticia.user != null ? #strings.substring(noticia.user.nombre, 0, 1) : 'A'}">U</span>
-                                    </div>
-                                    <!-- PROTECCIÓN: Navegación segura para nombre de autor -->
-                                    <small class="fw-bold text-muted" th:text="${noticia.user?.nombre ?: 'Anónimo'}">Autor</small>
-                                </div>
-                                <i class="bi bi-bookmark-plus fs-5 text-muted" style="cursor: pointer;"></i>
-                            </div>
-                        </div>
-                    </div>
+
+                    <div class="row g-4" id="listaPublicaciones"></div>
                 </div>
             </main>
         </div>
     </div>
+
+    <script>
+
+        function formatearFecha(fechaString) {
+            if (!fechaString) return "";
+            const fecha = new Date(fechaString);
+            return fecha.toLocaleString('es-ES', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+
+        function cargarPublicaciones() {
+            fetch('http://localhost:8080/publicaciones')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("DATA:", data);
+                    const list = document.getElementById('listaPublicaciones');
+                    list.innerHTML = '';
+                    data.forEach(noticia => {
+                        const div = document.createElement('div');
+                        div.classList.add('publisUbication', 'col-12', 'col-md-6', 'col-lg-6');
+
+                        const fechaLimpia = formatearFecha(noticia.fechaPublicacion);
+                        const contenidoCard = `
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden card-hover">
+            ${noticia.imgUrl ? `
+                <div class="position-relative">
+                    <img src="${noticia.imgUrl}" class="card-img-top" >
+                    <span class="position-absolute top-0 end-0 m-3 badge bg-white text-dark rounded-pill shadow-sm">
+                        ${noticia.category.nombre}
+                    </span>
+                </div>` : `
+                <div class="p-3 pb-0">
+                    <span class="badge bg-light text-dark rounded-pill">
+                        ${noticia.category.nombre}
+                    </span>
+                </div>`
+                            }
+            <div class="card-body p-4 d-flex flex-column">
+                <h5 class="fw-bold mb-2">${noticia.titulo}</h5>
+                <p class="text-secondary small mb-3" style="max-height: 60px; overflow: hidden;">
+                    ${noticia.contenido}
+                </p>
+                <a href="#" class="ver-mas text-primary small fw-bold mb-4">Leer más</a>
+                
+                <div class="d-flex align-items-center justify-content-between mt-auto pt-3 border-top">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-circle me-2" style="width: 35px; height: 35px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #6c757d; color: white;">
+                            ${noticia.user.imgUrl ?
+                                `<img src="${noticia.user.imgUrl}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                                `<span>${noticia.user.nombre.substring(0, 1).toUpperCase()}</span>`
+                            }
+                        </div>
+                        <div class="d-flex flex-column">
+                            <small class="fw-bold text-dark" style="line-height: 1.2;">${noticia.user.nombre}</small>
+                            <small class="text-muted" style="font-size: 0.7rem;">${fechaLimpia}</small>
+                        </div>
+                    </div>
+                    <i class="bi bi-bookmark-plus fs-5 text-muted" style="cursor: pointer;"></i>
+                </div>
+            </div>
+        </div>
+    `;
+
+                        div.innerHTML = contenidoCard;
+                        list.appendChild(div);
+                    });
+
+
+
+                    console.log('Publicaciones:', data);
+                })
+                .catch(error => console.error('Error al cargar publicaciones:', error));
+        }
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            cargarPublicaciones();
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

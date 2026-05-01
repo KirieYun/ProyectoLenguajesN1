@@ -2,6 +2,8 @@ package proyecto.tablero.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,11 +24,14 @@ public class User {
     private String imgUrl;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<NormalUser> normalUsers;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<AdminUser> adminUsers;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Publicacion> publicaciones;
 
 

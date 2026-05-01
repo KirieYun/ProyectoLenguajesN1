@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import proyecto.tablero.entity.Publicacion;
+import proyecto.tablero.entity.User;
 import proyecto.tablero.repository.PublicacionRepository;
 
 @Service
@@ -18,20 +19,18 @@ public class PublicacionService {
     private final CategoryService categoryService;
     private PublicacionRepository publicacionRepository;
 
-    PublicacionService(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
     public Publicacion add(Publicacion publicacion) {
         return publicacionRepository.save(publicacion);
     }
 
-    public Publicacion addPublicacion(String titulo, String contenido, int userId, MultipartFile file) {
+    public Publicacion addPublicacion(String titulo, String contenido, int categoryId, MultipartFile file, User user) {
 
         try {
             Publicacion publicacion = new Publicacion();
             publicacion.setTitulo(titulo);
             publicacion.setContenido(contenido);
+            publicacion.setCategory(categoryService.getById(categoryId));
+            publicacion.setUser(user);
 
             if (file == null || file.isEmpty()) {
                 publicacion.setImgUrl(null);
@@ -65,7 +64,7 @@ public class PublicacionService {
     }
 
     public List<Publicacion> getAll() {
-        return publicacionRepository.findAll();
+        return publicacionRepository.getPublicacionesOrdenadas();
     }
 
     public Publicacion getById(int id) {
@@ -143,7 +142,7 @@ public class PublicacionService {
         }
     }
     public List<Publicacion> getByCategory(Integer categoryId) {
-        return publicacionRepository.findByCategoryId(categoryId);
+        return publicacionRepository.getPublicacionesPorCategoriaOrdenadas(categoryId);
     }
 
 }

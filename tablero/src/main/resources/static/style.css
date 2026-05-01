@@ -38,3 +38,14 @@ body {
         border-bottom: 1px solid #dee2e6;
     }
 }
+
+
+#listaPublicaciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.publisUbication {
+    break-inside: avoid;
+}
