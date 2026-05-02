@@ -27,13 +27,13 @@ PublicacionController(UserService userService) {
 
     @GetMapping
         @Operation(summary = "Obtener todas las publicaciones", description = "Devuelve una lista de todas las publicaciones registradas")
-    public List<proyecto.tablero.entity.Publicacion> getAllPublicaciones() {
+    public List<Publicacion> getAllPublicaciones() {
         return publicacionService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener una publicación por ID", description = "Devuelve una publicación específica según su ID")
-    public proyecto.tablero.entity.Publicacion getPublicacionById(@PathVariable int id) {
+    public Publicacion getPublicacionById(@PathVariable int id) {
         return publicacionService.getById(id);
     }
 

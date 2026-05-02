@@ -90,4 +90,13 @@ public class ViewController {
         model.addAttribute("usuario", getUsuarioMock());
         return "publicacion";
     }
+
+
+
+    @GetMapping("/usuarios")
+public String verUsuarios(Model model) {
+    model.addAttribute("usuario", getUsuarioMock());
+    return "usuarios";
+}
+
 }

@@ -12,24 +12,24 @@ import proyecto.tablero.repository.AdminUserRepository;
 @Service
 @AllArgsConstructor
 public class AdminUserService {
-    
+
     private AdminUserRepository adminUserRepository;
 
-        public AdminUser add(User user) {
-            AdminUser adminUser = new AdminUser();
-            adminUser.setUser(user);
-            return adminUserRepository.save(adminUser);
-        }
-    
-        public List<AdminUser> getAll() {
-            return adminUserRepository.findAll();
-        }
-    
-        public AdminUser getById(int id) {
-            return adminUserRepository.findById(id).orElse(null);
-        }
-    
-        public AdminUser update(int id, User user) {
+    public AdminUser add(User user) {
+        AdminUser adminUser = new AdminUser();
+        adminUser.setUser(user);
+        return adminUserRepository.save(adminUser);
+    }
+
+    public List<AdminUser> getAll() {
+        return adminUserRepository.findAll();
+    }
+
+    public AdminUser getById(int id) {
+        return adminUserRepository.findById(id).orElse(null);
+    }
+
+    public AdminUser update(int id, User user) {
         AdminUser existingAdminUser = adminUserRepository.findById(id).orElse(null);
         if (existingAdminUser == null) {
             return null;
@@ -37,8 +37,8 @@ public class AdminUserService {
         existingAdminUser.setUser(user);
         return adminUserRepository.save(existingAdminUser);
     }
-    
-        public void delete(int id) {
-            adminUserRepository.deleteById(id);
-        }
+
+    public void delete(int id) {
+        adminUserRepository.deleteById(id);
+    }
 }
