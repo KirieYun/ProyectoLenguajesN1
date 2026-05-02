@@ -9,24 +9,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import proyecto.tablero.entity.Publicacion;
+import proyecto.tablero.entity.User;
 import proyecto.tablero.repository.PublicacionRepository;
 
 @Service
 @AllArgsConstructor
 public class PublicacionService {
 
+    private final CategoryService categoryService;
     private PublicacionRepository publicacionRepository;
 
     public Publicacion add(Publicacion publicacion) {
         return publicacionRepository.save(publicacion);
     }
 
-    public Publicacion addPublicacion(String titulo, String contenido, int userId, MultipartFile file) {
+    public Publicacion addPublicacion(String titulo, String contenido, int categoryId, MultipartFile file, User user) {
 
         try {
             Publicacion publicacion = new Publicacion();
             publicacion.setTitulo(titulo);
             publicacion.setContenido(contenido);
+            publicacion.setCategory(categoryService.getById(categoryId));
+            publicacion.setUser(user);
 
             if (file == null || file.isEmpty()) {
                 publicacion.setImgUrl(null);
@@ -60,7 +64,7 @@ public class PublicacionService {
     }
 
     public List<Publicacion> getAll() {
-        return publicacionRepository.findAll();
+        return publicacionRepository.getPublicacionesOrdenadas();
     }
 
     public Publicacion getById(int id) {
@@ -110,18 +114,19 @@ public class PublicacionService {
         }
     }
 
-
-    public Publicacion update(int id, String titulo, String contenido, int userId) {
+    public Publicacion update(int id, String titulo, String contenido, int category_id, MultipartFile file) {
         Publicacion existingPublicacion = publicacionRepository.findById(id).orElse(null);
         if (existingPublicacion != null) {
             existingPublicacion.setTitulo(titulo);
             existingPublicacion.setContenido(contenido);
+            existingPublicacion.setCategory(categoryService.getById(category_id));
+                if (file != null && !file.isEmpty()) {
+                    updatePubliPicture(id, file);
+                }
             return publicacionRepository.save(existingPublicacion);
         }
         return null;
     }
-
-
 
     public void delete(int id) {
 
@@ -131,10 +136,13 @@ public class PublicacionService {
             if (fileToDelete.exists()) {
                 fileToDelete.delete();
             }
-                publicacionRepository.deleteById(id);
+            publicacionRepository.deleteById(id);
         } catch (Exception e) {
             System.err.println("Error al eliminar archivo: " + e.getMessage());
         }
+    }
+    public List<Publicacion> getByCategory(Integer categoryId) {
+        return publicacionRepository.getPublicacionesPorCategoriaOrdenadas(categoryId);
     }
 
 }

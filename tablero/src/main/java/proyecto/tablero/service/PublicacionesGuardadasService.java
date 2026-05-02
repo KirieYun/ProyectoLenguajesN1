@@ -44,7 +44,9 @@ public class PublicacionesGuardadasService {
          publicacionesGuardadasRepository.deleteById(id);
      }
 
-
+     public List<Publicacion> getGuardadasByUsuarioOrdenadas(Integer userId) {
+            return publicacionesGuardadasRepository.findGuardadasByUsuarioOrdenadas(userId);
+     }
 
 
 }

@@ -9,6 +9,16 @@
             "projectName": "img",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TableroApplication<tablero>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "proyecto.tablero.TableroApplication",
+            "projectName": "tablero",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

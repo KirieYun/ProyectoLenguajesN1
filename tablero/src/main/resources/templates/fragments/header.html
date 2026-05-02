@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <header th:fragment="header-principal">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-2 fixed-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
+                        <span class="fw-bold">S</span>
+                    </div>
+                    <span class="fw-bold text-dark">SiquiConnect</span>
+                </a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="bi bi-list fs-2"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold px-3" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold px-3" th:href="@{/objetos-perdidos}">Objetos Perdidos</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a th:if="${usuario == null}" class="btn btn-primary rounded-pill px-4 shadow-sm" th:href="@{/login}">
+                                Iniciar Sesión
+                            </a>
+                            <form th:if="${usuario != null}" th:action="@{/logout}" method="post">
+                                <button type="submit" class="btn btn-outline-danger rounded-pill px-4">Salir</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>
