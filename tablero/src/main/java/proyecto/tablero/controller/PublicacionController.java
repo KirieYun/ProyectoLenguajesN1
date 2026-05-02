@@ -58,7 +58,7 @@ PublicacionController(UserService userService) {
 
         @Operation(summary = "Obtener publicaciones por categoría", description = "Devuelve una lista de publicaciones filtradas por categoría")
         @GetMapping("/category/{categoryId}")
-        public List<Publicacion> getByCategory(@RequestParam(value = "categoryId", defaultValue = "1") Integer categoryId) {
+        public List<Publicacion> getByCategory(@PathVariable(value = "categoryId") Integer categoryId) {
             return publicacionService.getByCategory(categoryId);
         }
 

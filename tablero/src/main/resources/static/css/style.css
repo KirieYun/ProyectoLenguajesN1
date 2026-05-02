@@ -49,3 +49,14 @@ body {
 .publisUbication {
     break-inside: avoid;
 }
+
+.hover-sidebar {
+    cursor: pointer;           
+    user-select: none;         
+    transition: 0.2s;
+}
+
+.hover-sidebar:hover {
+    background-color: #f1f1f1;
+    color: #000;
+}
