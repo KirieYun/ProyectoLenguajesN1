@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import proyecto.tablero.entity.Publicacion;
 import proyecto.tablero.entity.PublicacionesGuardadas;
-import proyecto.tablero.entity.User;
 import proyecto.tablero.service.PublicacionService;
 import proyecto.tablero.service.PublicacionesGuardadasService;
 import proyecto.tablero.service.UserService;
@@ -59,7 +58,6 @@ public class PublicacionesGuardadasController {
     public void deletePublicacionGuardada(@PathVariable int id) {
         publicacionGuardadaService.delete(id);
     }
-
     
 
 }

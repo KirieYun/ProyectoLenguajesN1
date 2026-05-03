@@ -14,28 +14,50 @@ function formatoFecha(fechaString) {
         }
 
         function cargarPublicaciones() {
-            fetch('http://localhost:8080/publicaciones')
-                .then(response => response.json())
-                .then(data => {
-                    console.log("DATA:", data);
-                    const list = document.getElementById('listaPublicaciones');
-                    list.innerHTML = '';
-                    dibujarPublicaciones(data);
-                })
-                .catch(error => console.error('Error al cargar publicaciones:', error));
+    const token = localStorage.getItem('token');
+
+    fetch('http://localhost:8080/publicaciones', {
+        headers: {
+            'Authorization': 'Bearer ' + token
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('No autorizado o error en la petición');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("DATA:", data);
+        const list = document.getElementById('listaPublicaciones');
+        list.innerHTML = '';
+        dibujarPublicaciones(data);
+    })
+    .catch(error => console.error('Error al cargar publicaciones:', error));
+}
 
         function cargarPublicacionesCategoria(id) {
-            fetch(`http://localhost:8080/publicaciones/category/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("DATA por categoría:", data);
-                    const list = document.getElementById('listaPublicaciones');
-                    list.innerHTML = '';
-                    dibujarPublicaciones(data);
-                })
-                .catch(error => console.error('Error al cargar publicaciones por categoría:', error));
+    const token = localStorage.getItem('token');
+
+    fetch(`http://localhost:8080/publicaciones/category/${id}`, {
+        headers: {
+            'Authorization': 'Bearer ' + token
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('No autorizado o error en la petición');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("DATA por categoría:", data);
+        const list = document.getElementById('listaPublicaciones');
+        list.innerHTML = '';
+        dibujarPublicaciones(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
 
         function dibujarPublicaciones(publicaciones) {
             const list = document.getElementById('listaPublicaciones');

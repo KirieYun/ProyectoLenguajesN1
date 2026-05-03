@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +18,11 @@ import proyecto.tablero.repository.UserRepository;
 
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User add(User user) {
         return userRepository.save(user);
@@ -28,13 +34,15 @@ public class UserService {
 
             User user = new User();
             user.setCorreo(correo);
-            user.setContrasena(contraseña);
+            user.setContrasena(passwordEncoder.encode(contraseña));
             user.setNombre(Nombre);
 
             if (file == null || file.isEmpty()) {
                 user.setImgUrl(null);
                 return userRepository.save(user);
             }
+
+            
 
             String uploadDir = System.getProperty("user.dir") + "/uploads";
             File folder = new File(uploadDir);

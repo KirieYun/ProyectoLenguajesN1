@@ -38,9 +38,14 @@
             </main>
         </div>
     </div>
-<script th:src="@{/js/publicaciones.js}"></script>
+    <script th:src="@{/js/publicaciones.js}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = '/login';
+            }
             cargarPublicaciones();
         });
     </script>
