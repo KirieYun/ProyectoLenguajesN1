@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ import proyecto.tablero.service.UserService;
 import proyecto.tablero.dto.AuthResponse;
 import proyecto.tablero.dto.LoginRequest;
 import proyecto.tablero.entity.User;
+import proyecto.tablero.repository.AdminUserRepository;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,6 +25,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AdminUserRepository adminUserRepository;
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
@@ -62,4 +67,24 @@ public class AuthController {
         return ResponseEntity.ok(userService.add(user));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> obtenerUsuarioActual(Authentication authentication) {
+        String correo = authentication.getName();
+        User usuario = userService.obtenerPorCorreo(correo);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/is-admin")
+    public ResponseEntity<Boolean> checkIfAdmin(Authentication authentication) {
+        try {
+            String correo = authentication.getName();
+            User user = userService.obtenerPorCorreo(correo);
+
+            boolean isAdmin = adminUserRepository.existsByUserId(user.getId());
+
+            return ResponseEntity.ok(isAdmin);
+        } catch (Exception e) {
+            return ResponseEntity.ok(false);
+        }
+    }
 }

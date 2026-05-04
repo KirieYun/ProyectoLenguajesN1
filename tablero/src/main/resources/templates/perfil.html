@@ -11,22 +11,21 @@
 <body class="bg-light">
     <div th:replace="~{fragments/header :: header-principal}"></div>
 
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-10">
-                <!-- Header Perfil -->
-                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4 text-center text-md-start">
-                    <div class="d-md-flex align-items-center">
-                        <div class="avatar-circle bg-primary text-white mx-auto mx-md-0 mb-3 mb-md-0 shadow" style="width: 120px; height: 120px; font-size: 3rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                            <span th:text="${usuario != null ? #strings.substring(usuario.nombre, 0, 1) : 'U'}">U</span>
-                        </div>
-                        <div class="ms-md-4">
-                            <h2 class="fw-black mb-1" th:text="${usuario?.nombre ?: 'Usuario Invitado'}">Nombre Usuario</h2>
-                            <p class="text-muted mb-3" th:text="${usuario?.correo ?: 'sin-correo@ucre.ac.cr'}">correo@ucre.ac.cr</p>
-                            <button class="btn btn-outline-dark btn-sm rounded-pill px-4">Editar Datos</button>
-                        </div>
-                    </div>
-                </div>
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4 text-center text-md-start">
+    <div class="d-md-flex align-items-center">
+        <div id="userAvatar" class="avatar-circle bg-primary text-white mx-auto mx-md-0 mb-3 mb-md-0 shadow" 
+             style="width: 120px; height: 120px; font-size: 3rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <span id="inicialUsuario">U</span>
+        </div>
+        
+        <div class="ms-md-4">
+            <h2 id="nombreUsuario" class="fw-black mb-3">Cargando...</h2>
+            <button class="btn btn-outline-dark btn-sm rounded-pill px-4">Editar Datos</button>
+        </div>
+    </div>
+</div>
+
+
 
                 <!-- Pestañas -->
                 <ul class="nav nav-pills mb-4 justify-content-center justify-content-md-start gap-2">
@@ -62,6 +61,9 @@
             </div>
         </div>
     </div>
+
+    <script th:src="@{/js/perfilDatos.js}"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -88,9 +88,6 @@ public class ViewController {
 
     @GetMapping("/perfil")
     public String verPerfil(Model model) {
-        model.addAttribute("listaNoticias", publicacionService.getAll());
-        model.addAttribute("categorias", categoryService.getAll());
-        model.addAttribute("usuario", getUsuarioMock());
         return "perfil";
     }
 

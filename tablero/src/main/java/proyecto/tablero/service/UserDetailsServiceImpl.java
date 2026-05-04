@@ -27,7 +27,7 @@ public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundExce
     User user = userRepository.findByCorreo(correo)
             .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-    boolean isAdmin = adminUserRepository.existsByUser_Id(user.getId());
+    boolean isAdmin = adminUserRepository.existsByUserId(user.getId());
 
     String role = isAdmin ? "ROLE_ADMIN" : "ROLE_USER";
 

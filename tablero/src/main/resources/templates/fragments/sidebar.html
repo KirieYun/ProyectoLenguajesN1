@@ -8,13 +8,12 @@
             <div class="mb-4">
                 <a th:href="@{/perfil}"
                     class="d-flex align-items-center text-decoration-none p-3 rounded-4 bg-light border hover-sidebar">
-                    <div class="avatar-circle bg-primary text-white me-3 shadow-sm"
+                    <div id="userAvatar" class="avatar-circle bg-primary text-white mx-auto mx-md-0 mb-3 mb-md-0 shadow"
                         style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                        <span th:text="${usuario != null ? #strings.substring(usuario.nombre, 0, 1) : 'U'}">U</span>
+                        <span id="inicialUsuario">U</span>
                     </div>
                     <div class="overflow-hidden">
-                        <p class="mb-0 fw-bold text-dark text-truncate"
-                            th:text="${usuario != null ? usuario.nombre : 'Invitado'}">Nombre</p>
+                        <h5 id="nombreUsuario" class="fw-black mb-3">Cargando...</h5>
                         <small class="text-muted">Mi Perfil</small>
                     </div>
                 </a>
@@ -78,21 +77,34 @@
                 </div>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const token = localStorage.getItem('token');
-                        if (token) {
-                            const payload = JSON.parse(atob(token.split('.')[1]));
 
-                            if (payload.roles && payload.roles.includes('ADMIN')) {
+                    async function verificarAdmin() {
+                        const token = localStorage.getItem('token');
+
+                        try {
+                            const response = await fetch('/auth/is-admin', {
+                                headers: { 'Authorization': `Bearer ${token}` }
+                            });
+
+                            const isAdmin = await response.json();
+
+                            if (isAdmin) {
                                 document.getElementById('seccionAdmin').style.display = 'block';
+                                console.log("Acceso de administrador confirmado");
                             }
+                        } catch (error) {
+                            console.error("Error al verificar rol:", error);
                         }
-                    });
+                    }
+
                 </script>
+
+                <script th:src="@{/js/perfilDatos.js}"></script>
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         cargarCategorias();
+                        verificarAdmin();
                     });
                 </script>
             </div>

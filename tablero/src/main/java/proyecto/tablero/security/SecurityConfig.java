@@ -2,6 +2,7 @@ package proyecto.tablero.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -30,24 +31,23 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/favicon.ico").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/login", "/register").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/js/**").permitAll()
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/admin/**").permitAll()
-                        .requestMatchers("/categories").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
+
+                        // Usuarios
+                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/admin-users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").permitAll()
+
+                        // Los vistas
+                        .requestMatchers("/usuarios", "/categorias", "/perfil").permitAll()
                         .requestMatchers("/categories/**").permitAll()
-                        .requestMatchers("/usuarios", "/categorias").permitAll()
-                        .requestMatchers("/api/usuarios/**").permitAll()
-                        .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/noticias/**").permitAll()
-                        .requestMatchers("/uploads/**").permitAll()
-                        .requestMatchers("/perfil").permitAll()
-                        .requestMatchers("/noticias/nueva").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

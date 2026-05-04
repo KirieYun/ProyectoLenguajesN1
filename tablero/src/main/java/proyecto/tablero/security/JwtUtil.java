@@ -32,7 +32,7 @@ public class JwtUtil {
             .subject(userDetails.getUsername())
             .claim("roles", userDetails.getAuthorities().stream()
                     .map(grantedAuthority -> grantedAuthority.getAuthority())
-                    .toList()) // Guardamos la lista de roles
+                    .toList())
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith(getSigningKey(), Jwts.SIG.HS256)

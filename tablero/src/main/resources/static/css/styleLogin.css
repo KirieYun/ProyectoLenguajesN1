@@ -18,7 +18,7 @@ body {
     backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
@@ -30,7 +30,9 @@ body {
     margin-bottom: 10px;
 }
 
-.fw-black { font-weight: 800; }
+.fw-black {
+    font-weight: 800;
+}
 
 .input-group {
     margin-bottom: 20px;
@@ -124,11 +126,25 @@ body {
     transform: scale(0.98);
 }
 
-.small { font-size: 0.85rem; }
-.text-muted { color: #64748b; }
-.mb-2 { margin-bottom: 8px; }
-.mb-4 { margin-bottom: 24px; }
-.text-center { text-align: center; }
+.small {
+    font-size: 0.85rem;
+}
+
+.text-muted {
+    color: #64748b;
+}
+
+.mb-2 {
+    margin-bottom: 8px;
+}
+
+.mb-4 {
+    margin-bottom: 24px;
+}
+
+.text-center {
+    text-align: center;
+}
 
 button {
     width: 100%;
@@ -141,7 +157,7 @@ button {
     margin-bottom: 10px;
 }
 
-button[type="submit"], 
+button[type="submit"],
 .btn-primary-siqui {
     background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     color: white;
@@ -151,14 +167,14 @@ button[type="submit"],
     box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
 }
 
-button[type="submit"]:hover, 
+button[type="submit"]:hover,
 .btn-primary-siqui:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
     box-shadow: 0 6px 18px rgba(30, 58, 138, 0.3);
 }
 
-button:not([type="submit"]), 
+button:not([type="submit"]),
 .btn-secondary-siqui {
     background-color: transparent;
     color: #1e3a8a;
@@ -167,7 +183,7 @@ button:not([type="submit"]),
     font-size: 0.9rem;
 }
 
-button:not([type="submit"]):hover, 
+button:not([type="submit"]):hover,
 .btn-secondary-siqui:hover {
     background-color: #1e3a8a;
     color: white;

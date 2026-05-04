@@ -165,4 +165,8 @@ public class UserService {
         }
         return null;
     }
+    public User obtenerPorCorreo(String correo) {
+    return userRepository.findByCorreo(correo)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el correo: " + correo));
+    }
 }
