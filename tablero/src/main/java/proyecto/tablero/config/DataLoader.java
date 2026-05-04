@@ -34,8 +34,9 @@ public class DataLoader {
 
             if (userRepository.findByCorreo("user").isEmpty()) {
                 User user = new User();
-                user.setCorreo("user");
+                user.setCorreo("correo");
                 user.setContrasena(passwordEncoder.encode("user"));
+                user.setNombre("username");
 
                 userRepository.save(user);
             }

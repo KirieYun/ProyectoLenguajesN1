@@ -1,45 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" th:href="@{/css/styleLogin.css}">
 </head>
+
 <body>
 
-<div class="login-container">
+    <div class="login-container">
 
-    <form id="registerForm">
-        <h2>Crear Cuenta</h2>
+        <form id="registerForm">
+            <h2>Crear Cuenta</h2>
 
-        <div class="input-group">
-            <label for="username">Nombre de usuario</label>
-            <input type="text" id="username" name="username" required>
-        </div>
+            <div class="input-group">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" id="username" name="username" required>
+            </div>
 
-        <div class="input-group">
-            <label for="correo">Correo</label>
-            <input type="email" id="correo" name="correo" required>
-        </div>
+            <div class="input-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
 
-        <div class="input-group">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required>
-        </div>
+            <div class="input-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required>
+            </div>
 
-        <button type="submit">Registrarse</button>
-    </form>
+            <button type="submit">Registrarse</button>
+            <div style="margin-top: 15px; text-align: center;">
+                <button onclick="window.location.href='/login'">
+                    Volver al login
+                </button>
+            </div>
 
-    <div style="margin-top: 15px; text-align: center;">
-        <button onclick="window.location.href='/login'">
-            Volver al login
-        </button>
+        </form>
+
+
+
     </div>
 
-</div>
+    <script>
 
-<script th:src="@{/js/script.js}"></script>
+        document.getElementById("registerForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const data = {
+                nombre: document.getElementById("username").value, 
+                correo: document.getElementById("correo").value, 
+                contrasena: document.getElementById("password").value 
+            };
+
+
+
+            const response = await fetch("/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert("Usuario creado correctamente");
+                window.location.href = "/login";
+            } else {
+                alert("Error al registrar usuario - " + response.statusText);
+            }
+        });
+    </script>
 
 </body>
+
 </html>

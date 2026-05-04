@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import proyecto.tablero.security.JwtUtil;
@@ -18,6 +19,8 @@ import proyecto.tablero.entity.User;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserService userService;
 
@@ -26,11 +29,12 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     public AuthController(AuthenticationManager authenticationManager,
-                          UserDetailsService userDetailsService,
-                          JwtUtil jwtUtil) {
+            UserDetailsService userDetailsService,
+            JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -39,9 +43,7 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getCorreo(),
-                            request.getPassword()
-                    )
-            );
+                            request.getPassword()));
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(request.getCorreo());
             String token = jwtUtil.generateToken(userDetails);
@@ -54,10 +56,10 @@ public class AuthController {
         }
     }
 
-    
-    @PostMapping("/auth/register")
-public ResponseEntity<?> register(@RequestBody User user) {
-    return ResponseEntity.ok(userService.add(user));
-}
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        user.setContrasena(passwordEncoder.encode(user.getContrasena()));
+        return ResponseEntity.ok(userService.add(user));
+    }
 
 }
