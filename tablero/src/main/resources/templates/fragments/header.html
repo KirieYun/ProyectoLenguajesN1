@@ -20,15 +20,12 @@
                         <li class="nav-item">
                             <a class="nav-link fw-semibold px-3" th:href="@{/}">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold px-3" th:href="@{/objetos-perdidos}">Objetos Perdidos</a>
-                        </li>
                         <li class="nav-item ms-lg-3">
                             <a th:if="${usuario == null}" class="btn btn-primary rounded-pill px-4 shadow-sm" th:href="@{/login}">
                                 Iniciar Sesión
                             </a>
                             <form th:if="${usuario != null}" th:action="@{/logout}" method="post">
-                                <button type="submit" class="btn btn-outline-danger rounded-pill px-4">Salir</button>
+                                <button type="submit" class="btn btn-outline-danger rounded-pill px-4">Inicio sesión</button>
                             </form>
                         </li>
                     </ul>

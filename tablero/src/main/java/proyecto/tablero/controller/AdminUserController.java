@@ -48,7 +48,7 @@ public class AdminUserController {
     @Operation(summary = "Eliminar usuario administrador", description = "Elimina un usuario administrador existente")
     @DeleteMapping("/{id}")
     public void deleteAdminUser(@PathVariable int id) {
-        adminUserService.delete(id);
+        adminUserService.deleteByUserId(id);
     }
 
     @GetMapping("/ids")

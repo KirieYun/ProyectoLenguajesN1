@@ -19,7 +19,7 @@ public class NormalUserService {
         NormalUser normalUser = new NormalUser();
         normalUser.setUser(user);
         return normalUserRepository.save(normalUser);
-        
+
     }
 
     public List<NormalUser> getAll() {
@@ -39,8 +39,16 @@ public class NormalUserService {
         return normalUserRepository.save(existingNormalUser);
     }
 
-     public void delete(int id) {
-         normalUserRepository.deleteById(id);
-     }
+    public void deleteByUserId(int userId) {
+        NormalUser normal = normalUserRepository.findAll()
+                .stream()
+                .filter(n -> n.getUser().getId() == userId)
+                .findFirst()
+                .orElse(null);
+
+        if (normal != null) {
+            normalUserRepository.delete(normal);
+        }
+    }
 
 }

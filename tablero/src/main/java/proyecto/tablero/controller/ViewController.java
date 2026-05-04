@@ -28,7 +28,9 @@ public class ViewController {
 
     @GetMapping("/")
     public String inicio(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
+
         List<Publicacion> noticias;
+
         if (categoriaId != null && categoriaId != 0) {
             noticias = publicacionService.getByCategory(categoriaId);
         } else {
@@ -38,6 +40,7 @@ public class ViewController {
         model.addAttribute("listaNoticias", noticias);
         model.addAttribute("categorias", categoryService.getAll());
         model.addAttribute("usuario", getUsuarioMock());
+
         return "noticias";
     }
 
@@ -54,9 +57,14 @@ public class ViewController {
             @RequestParam("contenido") String contenido,
             @RequestParam("categoriaId") Integer categoriaId,
             @RequestParam(value = "file", required = false) MultipartFile file) {
-        
-        Publicacion nueva = publicacionService.addPublicacion(titulo, contenido, 1, file, getUsuarioMock());
-        
+
+        Publicacion nueva = publicacionService.addPublicacion(
+                titulo,
+                contenido,
+                1,
+                file,
+                getUsuarioMock());
+
         if (categoriaId != null && categoriaId != 0) {
             Category cat = categoryService.getById(categoriaId);
             if (cat != null) {
@@ -64,7 +72,7 @@ public class ViewController {
                 publicacionService.add(nueva);
             }
         }
-        
+
         return "redirect:/";
     }
 
@@ -91,12 +99,15 @@ public class ViewController {
         return "publicacion";
     }
 
-
-
     @GetMapping("/usuarios")
-public String verUsuarios(Model model) {
-    model.addAttribute("usuario", getUsuarioMock());
-    return "usuarios";
-}
+    public String verUsuarios(Model model) {
+        model.addAttribute("usuario", getUsuarioMock());
+        return "usuarios";
+    }
 
+    @GetMapping("/categorias")
+    public String verCategorias(Model model) {
+        model.addAttribute("usuario", getUsuarioMock());
+        return "categorias";
+    }
 }

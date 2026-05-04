@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import proyecto.tablero.entity.User;
+import proyecto.tablero.repository.PublicacionRepository;
 import proyecto.tablero.repository.UserRepository;
 
 @Service
@@ -17,6 +18,10 @@ import proyecto.tablero.repository.UserRepository;
 public class UserService {
 
     private UserRepository userRepository;
+
+    private final AdminUserService adminUserService;
+    private final NormalUserService normalUserService;
+    private final PublicacionRepository publicacionRepository;
 
     public User add(User user) {
         return userRepository.save(user);
@@ -65,7 +70,6 @@ public class UserService {
         }
     }
 
-
     public List<User> getAll() {
         return userRepository.findAll();
 
@@ -75,20 +79,29 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    /* ⁡⁣⁢⁣Borrar usuario uno a la imagen de perfil⁡ */
     public void delete(int id) {
+    try {
+        User user = userRepository.findById(id).orElse(null);
 
-        try {
-            User user = userRepository.findById(id).orElse(null);
-            File fileToDelete = new File(System.getProperty("user.dir"), user.getImgUrl());
-            if (fileToDelete.exists()) {
-                fileToDelete.delete();
-            }
-            userRepository.deleteById(id);
-        } catch (Exception e) {
-            System.err.println("Error al eliminar archivo: " + e.getMessage());
+        if (user == null) return;
+
+        if (publicacionRepository != null) {
+            publicacionRepository.deleteByUserId(id);
         }
+
+        if (user.getImgUrl() != null) {
+            String path = System.getProperty("user.dir") + user.getImgUrl();
+            File file = new File(path);
+            if (file.exists()) file.delete();
+        }
+
+        adminUserService.deleteByUserId(id);
+        userRepository.deleteById(id);
+
+    } catch (Exception e) {
+        System.err.println("Error al eliminar usuario: " + e.getMessage());
     }
+}
 
     /* ⁡⁣⁢⁣cambiar foto de perfil⁡ */
     public User updateProfilePicture(int id, MultipartFile file) {
@@ -141,7 +154,6 @@ public class UserService {
             existingUser.setContrasena(contraseña);
             existingUser.setNombre(nombre);
             updateProfilePicture(id, file);
-
 
             return userRepository.save(existingUser);
         }
