@@ -25,15 +25,18 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration);
+    Date now = new Date();
+    Date expiryDate = new Date(now.getTime() + expiration);
 
-        return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(now)
-                .expiration(expiryDate)
-                .signWith(getSigningKey(), Jwts.SIG.HS256)
-                .compact();
+    return Jwts.builder()
+            .subject(userDetails.getUsername())
+            .claim("roles", userDetails.getAuthorities().stream()
+                    .map(grantedAuthority -> grantedAuthority.getAuthority())
+                    .toList()) // Guardamos la lista de roles
+            .issuedAt(now)
+            .expiration(expiryDate)
+            .signWith(getSigningKey(), Jwts.SIG.HS256)
+            .compact();
     }
 
     public String extractUsername(String token) {

@@ -18,7 +18,7 @@ import proyecto.tablero.entity.NormalUser;
 import proyecto.tablero.entity.User;
 import proyecto.tablero.service.NormalUserService;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @Tag(name = "NormalUserController", description = "Controlador para gestionar usuarios normales")
 @RestController
 @RequestMapping("/normal-users")
@@ -27,7 +27,6 @@ public class NormalUserController {
     @Autowired
     private NormalUserService normalUserService;
 
-    
     @GetMapping
     @Operation(summary = "Obtener todos los usuarios normales", description = "Devuelve una lista de todos los usuarios normales registrados")
     public List<NormalUser> getAllNormalUsers() {
@@ -39,26 +38,23 @@ public class NormalUserController {
     public NormalUser getNormalUserById(@PathVariable int id) {
         return normalUserService.getById(id);
     }
-    
 
-     @PostMapping("/add")
-     @Operation(summary = "Agregar usuario normal", description = "Crea un nuevo usuario normal")
-     public NormalUser addNormalUser(@RequestParam User user) {
-         return normalUserService.add(user);
-     }
+    @PostMapping("/add")
+    @Operation(summary = "Agregar usuario normal", description = "Crea un nuevo usuario normal")
+    public NormalUser addNormalUser(@RequestParam User user) {
+        return normalUserService.add(user);
+    }
 
-     @Operation(summary = "Actualizar usuario normal", description = "Actualiza los datos de un usuario normal existente")
-     @PostMapping("/{id}")
-        public NormalUser updateNormalUser(@PathVariable int id, @RequestParam User user) {
-            return normalUserService.update(id, user);
-        }
+    @Operation(summary = "Actualizar usuario normal", description = "Actualiza los datos de un usuario normal existente")
+    @PostMapping("/{id}")
+    public NormalUser updateNormalUser(@PathVariable int id, @RequestParam User user) {
+        return normalUserService.update(id, user);
+    }
 
-        @Operation(summary = "Eliminar usuario normal", description = "Elimina un usuario normal existente")
-        @DeleteMapping("/{id}")
-        public void deleteNormalUser(@PathVariable int id) {
-            normalUserService.delete(id);
-        }
+    @Operation(summary = "Eliminar usuario normal", description = "Elimina un usuario normal existente")
+    @DeleteMapping("/{id}")
+    public void deleteNormalUser(@PathVariable int id) {
+        normalUserService.deleteByUserId(id);
+    }
 
-
-    
 }

@@ -1,10 +1,12 @@
 package proyecto.tablero.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.AllArgsConstructor;
+
 import proyecto.tablero.service.PublicacionService;
 import proyecto.tablero.service.CategoryService;
 import proyecto.tablero.entity.Publicacion;
@@ -19,7 +21,19 @@ public class ViewController {
     private final CategoryService categoryService;
 
     @GetMapping("/")
-    public String home() {
+    public String inicio(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
+        List<Publicacion> noticias;
+
+        if (categoriaId != null && categoriaId != 0) {
+            noticias = publicacionService.getByCategory(categoriaId);
+        } else {
+            noticias = publicacionService.getAll();
+        }
+
+        model.addAttribute("listaNoticias", noticias);
+        model.addAttribute("categorias", categoryService.getAll());
+        model.addAttribute("usuario", getUsuarioMock());
+
         return "noticias";
     }
 

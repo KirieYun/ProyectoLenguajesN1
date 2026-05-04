@@ -38,7 +38,15 @@ public class AdminUserService {
         return adminUserRepository.save(existingAdminUser);
     }
 
-    public void delete(int id) {
-        adminUserRepository.deleteById(id);
+    public void deleteByUserId(int userId) {
+        AdminUser admin = adminUserRepository.findAll()
+                .stream()
+                .filter(a -> a.getUser().getId() == userId)
+                .findFirst()
+                .orElse(null);
+
+        if (admin != null) {
+            adminUserRepository.delete(admin);
+        }
     }
 }

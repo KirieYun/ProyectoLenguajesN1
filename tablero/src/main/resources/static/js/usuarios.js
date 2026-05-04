@@ -35,14 +35,35 @@ function dibujarUsuarios(users, admins) {
                 </td>
 
                 <td class="p-3 text-center">
+
                     <button onclick="cambiarRol(${user.id}, ${esAdmin})"
                         class="btn btn-profile-edit btn-sm">
                         CAMBIAR ROL
                     </button>
+
+                    <button onclick="eliminarUsuario(${user.id})"
+                        class="btn btn-danger btn-sm ms-2">
+                        ELIMINAR
+                    </button>
+
                 </td>
             </tr>
         `;
 
         tabla.innerHTML += fila;
     });
+}
+
+
+function eliminarUsuario(id) {
+    if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
+
+    fetch(`http://localhost:8080/users/${id}`, {
+        method: "DELETE"
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Error al eliminar usuario");
+        cargarUsuarios(); // recarga la tabla
+    })
+    .catch(err => console.error(err));
 }
