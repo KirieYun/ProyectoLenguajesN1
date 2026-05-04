@@ -29,4 +29,6 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, Intege
         @Modifying
         @Transactional
         void deleteByUserId(Integer userId);
+
+        List<Publicacion> findByUserIdOrderByFechaPublicacionDesc(int userId);
 }

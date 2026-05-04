@@ -11,6 +11,26 @@ function formatoFecha(fechaString) {
     });
 }
 
+function cargarPublicacionesCategoria(id) {
+    const token = localStorage.getItem('token');
+
+    fetch(`http://localhost:8080/publicaciones/category/${id}`, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error en la petición por categoría');
+        return response.json();
+    })
+    .then(data => {
+        dibujarPublicaciones(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+
 function cargarPublicaciones() {
     const token = localStorage.getItem('token');
 
@@ -29,23 +49,7 @@ function cargarPublicaciones() {
     .catch(error => console.error('Error al cargar publicaciones:', error));
 }
 
-function cargarPublicacionesCategoria(id) {
-    const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:8080/publicaciones/category/${id}`, {
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Error en la petición por categoría');
-        return response.json();
-    })
-    .then(data => {
-        dibujarPublicaciones(data);
-    })
-    .catch(error => console.error('Error:', error));
-}
 
 function dibujarPublicaciones(publicaciones) {
     const list = document.getElementById('listaPublicaciones');

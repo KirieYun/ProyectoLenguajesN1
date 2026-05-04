@@ -120,9 +120,9 @@ public class PublicacionService {
             existingPublicacion.setTitulo(titulo);
             existingPublicacion.setContenido(contenido);
             existingPublicacion.setCategory(categoryService.getById(category_id));
-                if (file != null && !file.isEmpty()) {
-                    updatePubliPicture(id, file);
-                }
+            if (file != null && !file.isEmpty()) {
+                updatePubliPicture(id, file);
+            }
             return publicacionRepository.save(existingPublicacion);
         }
         return null;
@@ -141,8 +141,13 @@ public class PublicacionService {
             System.err.println("Error al eliminar archivo: " + e.getMessage());
         }
     }
+
     public List<Publicacion> getByCategory(Integer categoryId) {
         return publicacionRepository.getPublicacionesPorCategoriaOrdenadas(categoryId);
+    }
+
+    public List<Publicacion> obtenerPublicacionesPorUsuario(int userId) {
+        return publicacionRepository.findByUserIdOrderByFechaPublicacionDesc(userId);
     }
 
 }
