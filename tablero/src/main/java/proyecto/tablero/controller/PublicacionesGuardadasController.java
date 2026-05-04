@@ -58,7 +58,6 @@ public class PublicacionesGuardadasController {
     public void deletePublicacionGuardada(@PathVariable int id) {
         publicacionGuardadaService.delete(id);
     }
-
     
 
 }

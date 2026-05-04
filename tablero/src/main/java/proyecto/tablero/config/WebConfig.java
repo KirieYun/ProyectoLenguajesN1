@@ -9,8 +9,7 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/");
+                .addResourceLocations("file:///C:/Users/astro/OneDrive/Escritorio/Proyecto1Lenguajes/tablero/uploads/");
         
-        System.out.println("Configuración de recursos estáticos cargada");
     }
 }

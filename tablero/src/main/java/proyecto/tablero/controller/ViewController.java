@@ -1,16 +1,17 @@
 package proyecto.tablero.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.AllArgsConstructor;
+
 import proyecto.tablero.service.PublicacionService;
 import proyecto.tablero.service.CategoryService;
 import proyecto.tablero.entity.Publicacion;
 import proyecto.tablero.entity.User;
 import proyecto.tablero.entity.Category;
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -19,16 +20,8 @@ public class ViewController {
     private final PublicacionService publicacionService;
     private final CategoryService categoryService;
 
-    private User getUsuarioMock() {
-        User usuarioMock = new User();
-        usuarioMock.setNombre("Usuario Invitado");
-        usuarioMock.setCorreo("invitado@siquiconnect.com");
-        return usuarioMock;
-    }
-
     @GetMapping("/")
     public String inicio(@RequestParam(value = "categoriaId", required = false) Integer categoriaId, Model model) {
-
         List<Publicacion> noticias;
 
         if (categoriaId != null && categoriaId != 0) {
@@ -42,6 +35,23 @@ public class ViewController {
         model.addAttribute("usuario", getUsuarioMock());
 
         return "noticias";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    private User getUsuarioMock() {
+        User usuarioMock = new User();
+        usuarioMock.setNombre("Usuario Invitado");
+        usuarioMock.setCorreo("invitado@siquiconnect.com");
+        return usuarioMock;
     }
 
     @GetMapping("/noticias/nueva")
