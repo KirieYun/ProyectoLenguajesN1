@@ -3,6 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            const token = localStorage.getItem('token');
+            if (!token || token === 'undefined' || token === 'null') {
+                window.location.replace('/login');
+            }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiquiConnect - Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -40,11 +48,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('token');
-
-            if (!token) {
-                window.location.href = '/login';
+            if (token) {
+                cargarPublicaciones(); // Solo llamamos si el token existe
             }
-            cargarPublicaciones();
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -50,9 +50,8 @@
         </main>
     </div>
 
-
     <script>
-        function publicar() {
+        async function publicar() {
 
             const titulo = document.getElementById('titulo').value;
             if (titulo.trim() === '') {
@@ -78,6 +77,34 @@
             const formData = new FormData();
             formData.append('titulo', titulo);
             formData.append('contenido', contenido);
+
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const resUser = await fetch('/auth/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const usuario = await resUser.json();
+                formData.append('userId', usuario.id);
+
+                const response = await fetch('/publicaciones/add', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const usuario = await response.json();
+                    actualizarInterfaz(usuario);
+                }
+            } catch (error) {
+                console.error("Error al obtener datos del usuario:", error);
+            }
+
+
             formData.append('categoryId', categoryId);
 
             if (file) {
@@ -98,7 +125,7 @@
         }
     </script>
 
-    
+
 
 </body>
 
